@@ -12,11 +12,11 @@ class PHPScraper {
     }
     public function find(string $element, array $identifier){
         if(!empty($identifier)){
-            $this->elements = $this->xpath->query("*/{$element}[@{$identifier[0]}='{$identifier[1]}']");
+            $this->elements = $this->xpath->query("*/{$element}[@{$identifier[0]}='{$identifier[1]}']")->item(0);
         }
-        $this->elements = $this->xpath->query("*/{$element}");
+        $this->elements = $this->xpath->query("*/{$element}")->item(0);
 
-        return !empty($this->elements) ? $this->elements[0] : false;
+        return !empty($this->elements) ? $this->elements : false;
     }
 
     public function find_all(string $element, array $identifier){
@@ -28,8 +28,22 @@ class PHPScraper {
         return $this->elements;
     }
 
-    public function getText() {
+    public function text() {
         return strip_tags($this->elements);
+    }
+
+    public function title() {
+        $this->elements = $this->xpath->query("/html/head/title");
+        return $this->elements;
+    }
+    
+    public function get($attribute) {
+        foreach($this->elements as $key => $value){
+            if($key === $attribute){
+                return $value;
+            }
+        }
+        return false;
     }
 }
 
