@@ -38,12 +38,7 @@ class PHPScraper {
     }
     
     public function get($attribute) {
-        foreach($this->elements as $key => $value){
-            if($key === $attribute){
-                return $value;
-            }
-        }
-        return false;
+        return !empty($this->elements->getAttribute($attribute)) ? $this->elements->getAttribute($attribute) : false;
     }
 }
 
